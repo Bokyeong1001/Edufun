@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\
+C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Release\
 Edufun_2
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\App.xaml
 6838530389
 
-14-1660471661
+13-818112294
 14-935638894
 ClassPage.xaml;CreatePage.xaml;DetailPage.xaml;EditPage.xaml;MainPage.xaml;MainWindow.xaml;
 
-False
+True
 

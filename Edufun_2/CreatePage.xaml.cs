@@ -52,8 +52,6 @@ namespace Edufun_2
             string Phone = tb_phone.Text;
             string Email = tb_email.Text;
             string Subject = tb_subject.Text;
-            string Bank = tb_bank.Text;
-            string Account_num = tb_account_num.Text;
             string Address = tb_address.Text;
             string Department1 = tb_department1.Text;
             string Department2 = tb_department2.Text;
@@ -63,14 +61,24 @@ namespace Edufun_2
             string Ship_Method2 = tb_shipmethod2.Text;
             string Remark = tb_remark.Text;
 
-            String sql = "INSERT INTO Instructor (Name,Phone,Email,Subject,Bank,Account_num,Address,Department1,Department2,Ship_Address1,Ship_Address2,Ship_Method1,Ship_Method2,Remark) VALUES ('"+Name+"','"+Phone+ "','" + Email+"','" +Subject+"','" +Bank+ "','" +Account_num+ "','" +Address+ "','" +Department1+ "','" +Department2+ "','" +Ship_Address1+ "','" +Ship_Address2+ "','" +Ship_Method1+ "','" +Ship_Method2+ "','" +Remark+"')";
+            String sql = "INSERT INTO Instructor (Name,Phone,Email,Subject,Address,Department1,Department2,Ship_Address1,Ship_Address2,Ship_Method1,Ship_Method2,Remark) VALUES ('"+Name+"','"+Phone+ "','" + Email+"','" +Subject+"','" + "','" +Address+ "','" +Department1+ "','" +Department2+ "','" +Ship_Address1+ "','" +Ship_Address2+ "','" +Ship_Method1+ "','" +Ship_Method2+ "','" +Remark+"')";
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
-            Console.WriteLine("result: " + result);
             MessageBox.Show("저장됐습니다");
-            MainPage main = new MainPage();
-            this.NavigationService.Navigate(main);
+
+            String sql2 = "select* from Instructor where rowid = last_insert_rowid();";
+            Console.WriteLine(sql2);
+            SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+            SQLiteDataReader rdr2 = command2.ExecuteReader();
+            while (rdr2.Read())
+            {
+                MessageBox.Show(rdr2["ID"].ToString());
+                DetailPage detail = new DetailPage();
+                detail.SetLoadCompleted(NavigationService);
+                this.NavigationService.Navigate(detail, Int32.Parse(rdr2["ID"].ToString()));
+            }
+                
 
         }
     }

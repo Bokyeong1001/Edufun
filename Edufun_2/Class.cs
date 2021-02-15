@@ -12,9 +12,9 @@ namespace Edufun_2
         public int Instructor_ID { get; set; }
         public string School { get; set; }
         public string Day { get; set; }
-        public string Time { get; set; }
+        public int Time { get; set; }
         public int Year { get; set; }
-        public string Quarter { get; set; }
+        public int Quarter { get; set; }
         public int Student_count { get; set; }
         public int Sum { get; set; }
 

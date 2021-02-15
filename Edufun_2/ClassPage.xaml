@@ -9,6 +9,53 @@
       Title="ClassPage">
 
     <Grid Background="White">
-        
+        <ListView Name="classListView" Margin="13,60,27,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" GridViewColumnHeader.Click="classListView_Click" SelectionChanged="classListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ID}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Name" Width="100" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Phone" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Phone}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Subject" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Department1" Width="140">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Department1}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Department2" Width="140">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Department2}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Page>

@@ -38,6 +38,7 @@ namespace Edufun_2
             CreateTable();
             //InsertTable();
             SelectTable();
+            //reload();
         }
         public void Connection_Open()
         {
@@ -54,12 +55,12 @@ namespace Edufun_2
         }
         public void CreateTable()
         {
-            string sql = "create table if not exists Instructor (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name varchar(10), Phone varchar(12), Email varchar(30), Subject varchar(10), Address varchar(30),Bank varchar(10), Account_num varchar(30), Department1 varchar(10), Department2 varchar(10), Ship_Address1 varchar(30),Ship_Method1 varchar(20), Ship_Address2 varchar(30),Ship_Method2 varchar(20),Remark varchar(50))";
+            string sql = "create table if not exists Instructor (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name varchar(10), Phone varchar(12), Email varchar(30), Subject varchar(10), Address varchar(30), Department1 varchar(10), Department2 varchar(10), Ship_Address1 varchar(30),Ship_Method1 varchar(20), Ship_Address2 varchar(30),Ship_Method2 varchar(20),Remark varchar(100))";
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
             Console.WriteLine("result: " + result); 
 
-            string sql2 = "create table if not exists Class (ID INTEGER PRIMARY KEY AUTOINCREMENT, Instructor_ID INTEGER , School varchar(20),Day INTEGER,Time varchar(10),Student_count INTEGER, Year INTEGER, Quarter varchar(20), FOREIGN KEY(Instructor_ID) REFERENCES Instructor(ID))";
+            string sql2 = "create table if not exists Class (ID INTEGER PRIMARY KEY AUTOINCREMENT, Instructor_ID INTEGER , School varchar(20),Day INTEGER,Time INTEGER,Student_count INTEGER, Year INTEGER, Quarter INTEGER, FOREIGN KEY(Instructor_ID) REFERENCES Instructor(ID))";
             SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
             int result2 = command2.ExecuteNonQuery();
             Console.WriteLine("result2: " + result2);
@@ -67,6 +68,7 @@ namespace Edufun_2
 
         public void SelectTable()
         {
+            myListView.ItemsSource = null;
             Instructor.GetInstance().Clear();
 
             String sql = "SELECT * FROM Instructor";
@@ -90,14 +92,14 @@ namespace Edufun_2
 
         public void InsertTable()
         {
-         /*
-            String sql = "INSERT INTO Instructor (Name,Phone,Subject,Email,Address,Department1,Bank,Account_num,Ship_Address1,Ship_Method1,Remark) VALUES ('윤보경','01023320000','실험과학','ybk@edufun.com','서울시 광진구','직영','국민','866393472394','에릭이집','택배','얼굴')";
+         
+            String sql = "INSERT INTO Instructor (Name,Phone,Subject,Email,Address,Department1,Ship_Address1,Ship_Method1,Remark) VALUES ('윤보경','01023320000','실험과학','ybk@edufun.com','서울시 광진구','직영','택배','얼굴')";
 
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
             Console.WriteLine("result: " + result);
-            */
-            String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,'1교시', 2020 ,'4분기',20)";
+            
+            String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,1, 2020 ,1,20)";
 
             SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
             int result2 = command2.ExecuteNonQuery();
@@ -115,10 +117,13 @@ namespace Edufun_2
         private void myListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Instructor selectedItem = (Instructor)myListView.SelectedItem;
-            MessageBox.Show(selectedItem.Name.ToString());
-            DetailPage detail = new DetailPage();
-            detail.SetLoadCompleted(NavigationService);
-            this.NavigationService.Navigate(detail, selectedItem.ID);
+            //MessageBox.Show(selectedItem.Name.ToString());
+            if (selectedItem != null)
+            {
+                DetailPage detail = new DetailPage();
+                detail.SetLoadCompleted(NavigationService);
+                this.NavigationService.Navigate(detail, selectedItem.ID);
+            }
         }
 
         
@@ -170,6 +175,43 @@ namespace Edufun_2
         {
             CreatePage create = new CreatePage();
             this.NavigationService.Navigate(create);
+        }
+
+        private void bt_search_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cb_subject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void cb_department_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void reload()
+        {
+            myListView.ItemsSource = null;
+            Instructor.GetInstance().Clear();
+
+            String sql = "SELECT * FROM Instructor";
+
+            SQLiteCommand cmd = new SQLiteCommand(sql, conn);
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                string Name = rdr["Name"].ToString();
+                Console.WriteLine("Name: " + Name);
+                string Phone = rdr["Phone"].ToString();
+                Console.WriteLine("Phone: " + Phone);
+                //Int32.Parse(string) : string을 int로 변환
+                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+            }
+            rdr.Close();
+            myListView.ItemsSource = Instructor.GetInstance();
         }
     }
 }

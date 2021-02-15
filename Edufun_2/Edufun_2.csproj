@@ -92,6 +92,7 @@
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="School_student.cs" />
     <Compile Include="CreatePage.xaml.cs">
       <DependentUpon>CreatePage.xaml</DependentUpon>
     </Compile>

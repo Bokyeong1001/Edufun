@@ -24,5 +24,15 @@ namespace Edufun_2
         {
             InitializeComponent();
         }
+
+        private void classListView_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void classListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

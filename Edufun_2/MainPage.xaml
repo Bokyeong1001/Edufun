@@ -12,8 +12,29 @@
 
     <Grid>
         <Grid Background="White">
-            <Button Content="생성하기" Name="SaveButton" Click="SaveButton_Click" Width="100" Height="30" Margin="10,10,683.6,380" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" />
-
+            <Grid Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="생성하기" Name="SaveButton" Click="SaveButton_Click" Grid.Column="0" FontSize="20" Margin="0,10,0,0" />
+                <ComboBox  Grid.Column="1" VerticalAlignment="Center" FontSize="24" Margin="20,0,0,0" Name="cb_subject" SelectionChanged="cb_subject_SelectionChanged">
+                    <ComboBoxItem Content="생명"/>
+                    <ComboBoxItem Content="실험"/>
+                </ComboBox>
+                <ComboBox  Grid.Column="2" VerticalAlignment="Center" FontSize="24" Margin="20,0,0,0" Name="cb_department" SelectionChanged="cb_department_SelectionChanged">
+                    <ComboBoxItem Content="직영지사"/>
+                    <ComboBoxItem Content="직영개인"/>
+                    <ComboBoxItem Content="위탁회원"/>
+                    <ComboBoxItem Content="기타1"/>
+                    <ComboBoxItem Content="기타2"/>
+                </ComboBox>
+                <TextBox  Grid.Column="3" x:Name="tb_search" Margin="20,0,0,0" VerticalAlignment="Center" FontSize="24"/>
+                <Button  Grid.Column="4" x:Name="bt_search" Content="검색" Click="bt_search_Click" VerticalAlignment="Center" FontSize="24"/>
+            </Grid>
             <ListView Name="myListView" Margin="13,60,27,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionChanged="myListView_SelectionChanged" GridViewColumnHeader.Click="myListView_Click">
                 <ListView.View>
                     <GridView>
@@ -24,35 +45,35 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="이름" Width="100" >
+                        <GridViewColumn Header="Name" Width="100" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="번호" Width="200">
+                        <GridViewColumn Header="Phone" Width="200">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Phone}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="과목" Width="120">
+                        <GridViewColumn Header="Subject" Width="120">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="소속1" Width="140">
+                        <GridViewColumn Header="Department1" Width="140">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Department1}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="소속" Width="140">
+                        <GridViewColumn Header="Department2" Width="140">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Department2}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>

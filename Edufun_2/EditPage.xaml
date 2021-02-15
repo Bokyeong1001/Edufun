@@ -7,11 +7,25 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="EditPage" Background="White">
-
+    <Page.Resources>
+        <Storyboard x:Key="sbShowClassDetail" >
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-450,0,0,0" To="450,0,0,0" DecelerationRatio=".9" Duration="0:0:0.3" />
+        </Storyboard>
+        <Storyboard x:Key="sbHideClassDetail">
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="450,0,0,0" To="-450,0,0,0" DecelerationRatio=".9" Duration="0:0:0.3" />
+        </Storyboard>
+        <Storyboard x:Key="sbShowClassAdd" >
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-900,0,0,0" To="450,0,0,0" DecelerationRatio=".9" Duration="0:0:0.3" />
+        </Storyboard>
+        <Storyboard x:Key="sbHideClassAdd">
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="450,0,0,0" To="-900,0,0,0" DecelerationRatio=".9" Duration="0:0:0.3" />
+        </Storyboard>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="270"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
@@ -25,8 +39,7 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -100,22 +113,6 @@
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="300"/>
-                </Grid.ColumnDefinitions>
-                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0" >
-                    <TextBlock Text="결제계좌"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBox x:Name="tb_bank"  FontSize="24"/>
-                </Border>
-                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="2" >
-                    <TextBox x:Name="tb_account_num"  FontSize="24"/>
-                </Border>
-            </Grid>
-            <Grid Grid.Row="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0" >
@@ -126,12 +123,15 @@
                 </Border>
             </Grid>
         </Grid>
-        <Grid  Grid.Row="2">
+        <Grid Grid.Row="2">
+            <Button x:Name="add_class" Content="수업 추가하기" FontSize="24" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="140,0,0,0" Click="add_class_Click"/>
+        </Grid>
+        <Grid  Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <ListView Name="classListView" Margin="13,10,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" GridViewColumnHeader.Click="classListView_Click">
+            <ListView Name="classListView" Margin="13,10,0,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" GridViewColumnHeader.Click="classListView_Click" SelectionChanged="classListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="50">
@@ -141,49 +141,49 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="학교명" Width="150" >
+                        <GridViewColumn Header="School" Width="150" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding School}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding School}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="요일" Width="100">
+                        <GridViewColumn Header="Day" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Day}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding Day}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="시간" Width="100">
+                        <GridViewColumn Header="Time" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Time}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding Time}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="년도" Width="100">
+                        <GridViewColumn Header="Year" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Year}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding Year}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="분기" Width="100">
+                        <GridViewColumn Header="Quarter" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Quarter}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding Quarter}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="학생수" Width="80">
+                        <GridViewColumn Header="Student_count" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Student_count}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
+                                    <TextBlock Text="{Binding Student_count}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="20"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="합계" Width="80">
+                        <GridViewColumn Header="Sum" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Sum}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
@@ -198,7 +198,7 @@
                 <TextBlock Text="" x:Name="tb_totalcount" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="50"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="3" Width="750" Height="240" Margin="10,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid Grid.Row="4" Width="750" Height="240" Margin="10,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
@@ -252,6 +252,150 @@
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
                     <TextBox x:Name="tb_shipmethod2"  FontSize="24"/>
                 </Border>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ClassDetail" Width="450" Height="500" Margin="-450,0,0,0" Background="#FFBBBBBB" Grid.RowSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="수업 정보" FontSize="30px" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="학교명" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="에릭초등학교" Grid.Column="1" Name="tb_edit_school" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="요일" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="월" Grid.Column="1" Name="tb_edit_day" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="시간" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="1" Grid.Column="2" Name="tb_edit_time" FontSize="24px" VerticalAlignment="Center" Margin="0,9,10,0"/>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="년도" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="2021" Grid.Column="1" Name="tb_edit_year" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="분기" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="1" Grid.Column="1" Name="tb_edit_quarter" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="학생수" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="10" Grid.Column="1" Name="tb_edit_student_count" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="7" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Name="editclass_cancel" Content="취소하기" FontSize="24" Margin="30,0,0,0" Click="editclass_cancel_Click" Background="White" />
+                <Button Grid.Column="2" Name="editclass_save" Content="수정하기" FontSize="24" Margin="0,0,30,0" Click="editclass_save_Click" Background="White" />
+            </Grid>
+            <Grid Grid.Row="8">
+                <Button Grid.Column="0" Name="editclass_delete" Content="삭제하기" FontSize="24" Margin="20,10,20,0" Click="editclass_delete_Click" Background="#FFFF8D8D"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ClassAdd" Width="450" Height="500" Margin="-900,0,0,0" Background="#FFBBBBBB" Grid.RowSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="수업 정보" FontSize="30px" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="학교명" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="1" Name="tb_add_school" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="요일" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="1" Name="tb_add_day" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="시간" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="2" Name="tb_add_time" FontSize="24px" VerticalAlignment="Center" Margin="0,9,10,0"/>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="년도" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="1" Name="tb_add_year" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="분기" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="1" Name="tb_add_quarter" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="학생수" FontSize="24px" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Text="" Grid.Column="1" Name="tb_add_student_count" FontSize="24px" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            </Grid>
+            <Grid Grid.Row="7" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Name="addclass_cancel" Content="취소하기" FontSize="24" Margin="30,0,0,0" Click="addclass_cancel_Click" Background="White" />
+                <Button Grid.Column="2" Name="addclass_save" Content="저장하기" FontSize="24" Margin="0,0,30,0" Click="addclass_save_Click" Background="White" />
             </Grid>
         </Grid>
     </Grid>
