@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SQLite;
 using System.ComponentModel;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Edufun_2
 {
@@ -25,8 +26,10 @@ namespace Edufun_2
         private SQLiteConnection conn;
         private GridViewColumnHeader lastClickedGridViewColumnHeader = null;
         private ListSortDirection lastListSortDirection = ListSortDirection.Ascending;
-
-
+        bool start = false;
+        string department = "";
+        string subject = "";
+        string search = "Name";
         public MainPage()
         {
             InitializeComponent();
@@ -38,7 +41,7 @@ namespace Edufun_2
             CreateTable();
             //InsertTable();
             SelectTable();
-            //reload();
+            start = true;
         }
         public void Connection_Open()
         {
@@ -83,7 +86,7 @@ namespace Edufun_2
                 string Phone = rdr["Phone"].ToString();
                 Console.WriteLine("Phone: " + Phone);
                 //Int32.Parse(string) : string을 int로 변환
-                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
             }
             rdr.Close();
             myListView.ItemsSource = Instructor.GetInstance();
@@ -92,14 +95,14 @@ namespace Edufun_2
 
         public void InsertTable()
         {
-         
-            String sql = "INSERT INTO Instructor (Name,Phone,Subject,Email,Address,Department1,Ship_Address1,Ship_Method1,Remark) VALUES ('윤보경','01023320000','실험과학','ybk@edufun.com','서울시 광진구','직영','택배','얼굴')";
+         /*
+            String sql = "INSERT INTO Instructor (Name,Phone,Subject,Email,Address,Department1,Ship_Address1,Ship_Method1,Remark) VALUES ('윤보경','01023320000','실험과학','ybk@edufun.com','서울시 광진구','직영','서울집','택배','얼굴')";
 
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
             Console.WriteLine("result: " + result);
-            
-            String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,1, 2020 ,1,20)";
+            */
+            String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,1, 2021 ,2,10)";
 
             SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
             int result2 = command2.ExecuteNonQuery();
@@ -177,27 +180,49 @@ namespace Edufun_2
             this.NavigationService.Navigate(create);
         }
 
-        private void bt_search_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void cb_subject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (start)
+            {
+                ComboBoxItem cbi = (ComboBoxItem)cb_subject.SelectedItem;
+                string cbi_subject = cbi.Content.ToString();
+                if (cbi_subject == "과목전체") {
+                    subject = "";
+                }
+                else
+                {
+                    subject = cbi_subject;
+                }
+                reload();
+            }
         }
 
         private void cb_department_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (start)
+            {
+                ComboBoxItem cbi = (ComboBoxItem)cb_department.SelectedItem;
+                string cbi_department = cbi.Content.ToString();
+                if (cbi_department == "소속전체")
+                {
+                    department = "";
+                }
+                else
+                {
+                    department = cbi_department;
+                }
+                reload();
+            }
         }
         private void reload()
         {
             myListView.ItemsSource = null;
             Instructor.GetInstance().Clear();
 
-            String sql = "SELECT * FROM Instructor";
-
+            String sql = "SELECT * FROM Instructor WHERE subject LIKE '%" + subject + "%' AND (department1 LIKE '%" + department + "%' OR department2 LIKE '%" + department + "%')  AND " + search + " LIKE '%" + tb_search.Text + "%'";
+            Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
@@ -208,10 +233,62 @@ namespace Edufun_2
                 string Phone = rdr["Phone"].ToString();
                 Console.WriteLine("Phone: " + Phone);
                 //Int32.Parse(string) : string을 int로 변환
-                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
             }
             rdr.Close();
             myListView.ItemsSource = Instructor.GetInstance();
         }
+
+        private void cb_search_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (start)
+            {
+                ComboBoxItem cbi = (ComboBoxItem)cb_search.SelectedItem;
+                string cbi_search = cbi.Content.ToString();
+                if (cbi_search == "이름")
+                {
+                    search = "Name";
+                }
+                if (cbi_search == "폰번호")
+                {
+                    search = "Phone";
+                }
+                if (cbi_search == "이메일")
+                {
+                    search = "Email";
+                }
+            }
+        }
+        private void bt_search_Click(object sender, RoutedEventArgs e)
+        {
+            reload();
+        }
+
+        private void bt_class_Click(object sender, RoutedEventArgs e)
+        {
+            ClassPage classpage = new ClassPage();
+            this.NavigationService.Navigate(classpage);
+        }
+
+        static void DisplayInExcel(IEnumerable<Instructor> instructors)
+        {
+            var excelApp = new Excel.Application();
+            // Make the object visible.
+            excelApp.Visible = true;
+
+            // Create a new, empty workbook and add it to the collection returned
+            // by property Workbooks. The new workbook becomes the active workbook.
+            // Add has an optional parameter for specifying a praticular template.
+            // Because no argument is sent in this example, Add creates a new workbook.
+            excelApp.Workbooks.Add();
+
+            // This example uses a single workSheet. The explicit type casting is
+            // removed in a later procedure.
+            Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+
+            workSheet.Cells[1, "A"] = "ID";
+            workSheet.Cells[1, "B"] = "Name";
+        }
+
     }
 }

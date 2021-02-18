@@ -16,7 +16,6 @@ namespace Edufun_2
         public int Year { get; set; }
         public int Quarter { get; set; }
         public int Student_count { get; set; }
-        public int Sum { get; set; }
 
         private static List<Class> instance;
 

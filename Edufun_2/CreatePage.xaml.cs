@@ -61,7 +61,7 @@ namespace Edufun_2
             string Ship_Method2 = tb_shipmethod2.Text;
             string Remark = tb_remark.Text;
 
-            String sql = "INSERT INTO Instructor (Name,Phone,Email,Subject,Address,Department1,Department2,Ship_Address1,Ship_Address2,Ship_Method1,Ship_Method2,Remark) VALUES ('"+Name+"','"+Phone+ "','" + Email+"','" +Subject+"','" + "','" +Address+ "','" +Department1+ "','" +Department2+ "','" +Ship_Address1+ "','" +Ship_Address2+ "','" +Ship_Method1+ "','" +Ship_Method2+ "','" +Remark+"')";
+            String sql = "INSERT INTO Instructor (Name,Phone,Email,Subject,Address,Department1,Department2,Ship_Address1,Ship_Address2,Ship_Method1,Ship_Method2,Remark) VALUES ('"+Name+"','"+Phone+ "','" + Email+"','" +Subject+"','" +Address+ "','" +Department1+ "','" +Department2+ "','" +Ship_Address1+ "','" +Ship_Address2+ "','" +Ship_Method1+ "','" +Ship_Method2+ "','" +Remark+"')";
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();

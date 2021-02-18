@@ -11,6 +11,7 @@ namespace Edufun_2
         public int ID { get; set; }
         public string School { get; set; }
         public string Day { get; set; }
+        public int Year { get; set; }
         public int q1t1 { get; set; }
         public int q1t2 { get; set; }
         public int q1sum { get; set; }

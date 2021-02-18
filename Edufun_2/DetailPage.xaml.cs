@@ -27,6 +27,7 @@ namespace Edufun_2
         private SQLiteConnection conn;
         private GridViewColumnHeader lastClickedGridViewColumnHeader = null;
         private ListSortDirection lastListSortDirection = ListSortDirection.Ascending;
+        bool start = false;
         public DetailPage()
         {
             InitializeComponent();
@@ -92,7 +93,7 @@ namespace Edufun_2
             }
             return Day;
         }
-        bool start = false;
+        
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             start = true;
@@ -327,24 +328,117 @@ namespace Edufun_2
                 MessageBox.Show("요일 입력을 다시 해주세요");
                 return;
             }
-            String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','" + tb_add_time.Text + "','" + tb_add_year.Text + "','" + tb_add_quarter.Text + "'," + tb_add_student_count.Text + ")";
-            Console.WriteLine(sql2);
-            SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
-            int result2 = command2.ExecuteNonQuery();
-            Console.WriteLine("result2: " + result2);
-            if (result2 == 1)
+            Console.WriteLine(tb_q1t1.Text.Length);
+            if (tb_q1t1.Text.Length > 0)
             {
-                MessageBox.Show("저장됐습니다");
-                ComboBoxItem cbi = (ComboBoxItem)cb_year.SelectedItem;
-                string year = cbi.Content.ToString();
-                reload(year);
-                ShowHideDetail("sbHideClassAdd", ClassAdd);
+                //"INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,1, 2021 ,2,10)";
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "'," + day + ",1," + tb_add_year.Text + ",1," + tb_q1t1.Text + ")";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
             }
-            else
+            if (tb_q1t2.Text.Length > 0)
             {
-                MessageBox.Show("입력을 확인해주세요");
-                return;
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','2'," + tb_add_year.Text + ",'1','" + tb_q1t2.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
             }
+            if (tb_q2t1.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','1'," + tb_add_year.Text + ",'2','" + tb_q2t1.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            if (tb_q2t2.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','2'," + tb_add_year.Text + ",'2','" + tb_q2t2.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            if (tb_q3t1.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','1'," + tb_add_year.Text + ",'3','" + tb_q3t1.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            if (tb_q3t2.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','2'," + tb_add_year.Text + ",'3','" + tb_q3t2.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            if (tb_q4t1.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','1'," + tb_add_year.Text + ",'4','" + tb_q4t1.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            if (tb_q4t2.Text.Length > 0)
+            {
+                String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (" + instructor_id + ",'" + tb_add_school.Text + "','" + day + "','2'," + tb_add_year.Text + ",'4','" + tb_q4t2.Text + "')";
+                Console.WriteLine(sql2);
+                SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+                int result2 = command2.ExecuteNonQuery();
+                Console.WriteLine("result2: " + result2);
+                if (result2 == -1)
+                {
+                    MessageBox.Show("입력을 확인해주세요");
+                    return;
+                }
+            }
+            ComboBoxItem cbi = (ComboBoxItem)cb_year.SelectedItem;
+            string year = cbi.Content.ToString();
+            reload(year);
+            ShowHideDetail("sbHideClassAdd", ClassAdd);
+            
         }
         private void reload(string year)
         {
