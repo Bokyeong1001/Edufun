@@ -28,6 +28,7 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="190"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Button  Width="100" Height="40" Name="BackButton" Click="BackButton_Click" Content="뒤로가기" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontSize="20" ></Button>

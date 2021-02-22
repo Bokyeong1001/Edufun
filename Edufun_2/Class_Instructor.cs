@@ -14,8 +14,6 @@ namespace Edufun_2
         public string Subject { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string Day { get; set; }
-        public int Time { get; set; }
         public int Year { get; set; }
         public int Quarter { get; set; }
         public int Student_count { get; set; }

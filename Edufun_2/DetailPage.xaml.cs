@@ -244,8 +244,8 @@ namespace Edufun_2
 
             classListView.ItemsSource = School_student.GetInstance();
 
-
             String sql3 = "SELECT SUM(Student_count),Quarter FROM Class WHERE Year = " + year + " AND Instructor_ID = " + instructor_id + " GROUP BY(Quarter) ";
+
             SQLiteCommand cmd3 = new SQLiteCommand(sql3, conn);
             SQLiteDataReader rdr3 = cmd3.ExecuteReader();
 

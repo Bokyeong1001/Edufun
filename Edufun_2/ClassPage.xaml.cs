@@ -136,6 +136,7 @@ namespace Edufun_2
                 instructors.Add(inst);
                 Console.WriteLine(rdr["SUM(Student_count)"]);
                 Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
+
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
@@ -264,7 +265,6 @@ namespace Edufun_2
             }
         }
 
-
         private void bt_search_Click(object sender, RoutedEventArgs e)
         {
             reload();
@@ -296,6 +296,7 @@ namespace Edufun_2
             Class_Instructor.GetInstance().Clear();
 
             String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
+
             Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
