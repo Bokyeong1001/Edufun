@@ -19,11 +19,10 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="140"/>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="60"/>
+
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Name="bt_back" Content="뒤로가기" Click="bt_back_Click" FontSize="24" Grid.RowSpan="2" />
             <ComboBox  Grid.Column="1" VerticalAlignment="Center" FontSize="24" Margin="20,6,0,6" Name="cb_year" SelectionChanged="cb_year_SelectionChanged" SelectedIndex="0" Grid.RowSpan="2">
@@ -38,29 +37,13 @@
                 <ComboBoxItem Content="3분기"/>
                 <ComboBoxItem Content="4분기"/>
             </ComboBox>
-            <ComboBox  Grid.Column="3" VerticalAlignment="Center" FontSize="24" Margin="20,6,0,6" Name="cb_day" SelectionChanged="cb_day_SelectionChanged" SelectedIndex="0" Grid.RowSpan="2">
-                <ComboBoxItem Content="요일전체"/>
-                <ComboBoxItem Content="월요일"/>
-                <ComboBoxItem Content="화요일"/>
-                <ComboBoxItem Content="수요일"/>
-                <ComboBoxItem Content="목요일"/>
-                <ComboBoxItem Content="목요일"/>
-                <ComboBoxItem Content="금요일"/>
-                <ComboBoxItem Content="토요일"/>
-                <ComboBoxItem Content="일요일"/>
-            </ComboBox>
-            <ComboBox  Grid.Column="4" VerticalAlignment="Center" FontSize="24" Margin="20,6,0,6" Name="cb_time" SelectionChanged="cb_time_SelectionChanged" SelectedIndex="0" Grid.RowSpan="2">
-                <ComboBoxItem Content="교시전체"/>
-                <ComboBoxItem Content="1교시"/>
-                <ComboBoxItem Content="2교시"/>
-            </ComboBox>
-            <ComboBox  Grid.Column="5" VerticalAlignment="Center" FontSize="24" Margin="30,6,0,6" Name="cb_search" SelectionChanged="cb_search_SelectionChanged" SelectedIndex="0" HorizontalAlignment="Left" Width="100" Grid.RowSpan="2">
+            <ComboBox  Grid.Column="3" VerticalAlignment="Center" FontSize="24" Margin="30,6,0,6" Name="cb_search" SelectionChanged="cb_search_SelectionChanged" SelectedIndex="0" HorizontalAlignment="Left" Width="100" Grid.RowSpan="2">
                 <ComboBoxItem Content="이름"/>
                 <ComboBoxItem Content="폰번호"/>
                 <ComboBoxItem Content="이메일"/>
             </ComboBox>
-            <TextBox  Grid.Column="6" x:Name="tb_search" Margin="0,8" VerticalAlignment="Center" FontSize="24" Grid.RowSpan="2"/>
-            <Button  Grid.Column="7" x:Name="bt_search" Content="검색" Click="bt_search_Click" VerticalAlignment="Center" FontSize="24" Margin="0,7" Grid.RowSpan="2"/>
+            <TextBox  Grid.Column="4" x:Name="tb_search" Margin="0,8" VerticalAlignment="Center" FontSize="24" Grid.RowSpan="2"/>
+            <Button  Grid.Column="5" x:Name="bt_search" Content="검색" Click="bt_search_Click" VerticalAlignment="Center" FontSize="24" Margin="0,7" Grid.RowSpan="2"/>
         </Grid>
 
         <ListView Name="classListView" Margin="13,60,27,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" GridViewColumnHeader.Click="classListView_Click" SelectionChanged="classListView_SelectionChanged">
@@ -80,20 +63,6 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Subject" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Day" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Day}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                     <GridViewColumn Header="Phone" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -101,24 +70,38 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Email" Width="200">
+                    <GridViewColumn Header="Subject" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Email}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                                <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Department1" Width="140">
+                    <GridViewColumn Header="Quarter" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Quarter}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Department1" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Department1}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Department2" Width="140">
+                    <GridViewColumn Header="Department2" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Department2}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Student_count" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Student_count}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

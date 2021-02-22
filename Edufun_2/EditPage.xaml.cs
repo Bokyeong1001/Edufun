@@ -218,7 +218,32 @@ namespace Edufun_2
                 School_student.GetInstance().Add(new School_student() { ID = i, School = classes[i].School, Day = classes[i].Day, Year = classes[i].Year, q1t1 = classes[i].q1t1, q1t2 = classes[i].q1t2, q1sum = classes[i].q1t1 + classes[i].q1t2, q2t1 = classes[i].q2t1, q2t2 = classes[i].q2t2, q2sum = classes[i].q2t1 + classes[i].q2t2, q3t1 = classes[i].q3t1, q3t2 = classes[i].q3t2, q3sum = classes[i].q3t1 + classes[i].q3t2, q4t1 = classes[i].q4t1, q4t2 = classes[i].q4t2, q4sum = classes[i].q4t1 + classes[i].q4t2 });
             }
             classListView.ItemsSource = School_student.GetInstance();
-            tb_totalcount.Text = total_sum.ToString();
+
+            String sql3 = "SELECT SUM(Student_count),Quarter FROM Class WHERE Year = " + year + " AND Instructor_ID = " + instructor_id + " GROUP BY(Quarter) ";
+            SQLiteCommand cmd3 = new SQLiteCommand(sql3, conn);
+            SQLiteDataReader rdr3 = cmd3.ExecuteReader();
+
+            while (rdr3.Read())
+            {
+                Console.WriteLine(rdr3["SUM(Student_count)"]);
+                if (rdr3["Quarter"].ToString() == "1")
+                {
+                    tb_q1count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "2")
+                {
+                    tb_q2count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "3")
+                {
+                    tb_q3count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "4")
+                {
+                    tb_q4count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+            }
+            rdr3.Close();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -627,7 +652,32 @@ namespace Edufun_2
                 School_student.GetInstance().Add(new School_student() { ID = i, School = classes[i].School, Day = classes[i].Day, Year=classes[i].Year, q1t1 = classes[i].q1t1, q1t2 = classes[i].q1t2, q1sum = classes[i].q1t1 + classes[i].q1t2, q2t1 = classes[i].q2t1, q2t2 = classes[i].q2t2, q2sum = classes[i].q2t1 + classes[i].q2t2, q3t1 = classes[i].q3t1, q3t2 = classes[i].q3t2, q3sum = classes[i].q3t1 + classes[i].q3t2, q4t1 = classes[i].q4t1, q4t2 = classes[i].q4t2, q4sum = classes[i].q4t1 + classes[i].q4t2 });
             }
             classListView.ItemsSource = School_student.GetInstance();
-            tb_totalcount.Text = total_sum.ToString();
+
+            String sql3 = "SELECT SUM(Student_count),Quarter FROM Class WHERE Year = " + year + " AND Instructor_ID = " + instructor_id + " GROUP BY(Quarter) ";
+            SQLiteCommand cmd3 = new SQLiteCommand(sql3, conn);
+            SQLiteDataReader rdr3 = cmd3.ExecuteReader();
+
+            while (rdr3.Read())
+            {
+                Console.WriteLine(rdr3["SUM(Student_count)"]);
+                if (rdr3["Quarter"].ToString() == "1")
+                {
+                    tb_q1count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "2")
+                {
+                    tb_q2count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "3")
+                {
+                    tb_q3count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "4")
+                {
+                    tb_q4count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+            }
+            rdr3.Close();
         }
 
         private void add_class_Click(object sender, RoutedEventArgs e)

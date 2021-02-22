@@ -114,20 +114,15 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Day,Instructor_ID,Name,Phone,Email,Department1,Department2,Subject FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID GROUP BY(Class.Day)";
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
 
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
-                string day = Dayinttostring(Int32.Parse(rdr["Day"].ToString()));
-                //Int32.Parse(string) : string을 int로 변환
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Day = day, Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Console.WriteLine(rdr["SUM(Student_count)"]);
+                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(),Student_count= Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
@@ -256,70 +251,7 @@ namespace Edufun_2
             }
         }
 
-        private void cb_day_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (start)
-            {
-                ComboBoxItem cbi = (ComboBoxItem)cb_day.SelectedItem;
-                string cbi_day = cbi.Content.ToString();
-                if (cbi_day == "요일전체")
-                {
-                    day = "";
-                }
-                else if (cbi_day == "월요일")
-                {
-                    day = "1";
-                }
-                else if (cbi_day == "화요일")
-                {
-                    day = "2";
-                }
-                else if (cbi_day == "수요일")
-                {
-                    day = "3";
-                }
-                else if (cbi_day == "목요일")
-                {
-                    day = "4";
-                }
-                else if (cbi_day == "금요일")
-                {
-                    day = "5";
-                }
-                else if (cbi_day == "토요일")
-                {
-                    day = "6";
-                }
-                else if (cbi_day == "일요일")
-                {
-                    day = "7";
-                }
-                reload();
-            }
-        }
-
-        private void cb_time_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (start)
-            {
-                ComboBoxItem cbi = (ComboBoxItem)cb_time.SelectedItem;
-                string cbi_time = cbi.Content.ToString();
-                if (cbi_time == "교시전체")
-                {
-                    time = "";
-                }
-                else if (cbi_time == "1교시")
-                {
-                    time = "1";
-                }
-                else if (cbi_time == "2교시")
-                {
-                    time = "2";
-                }
-                reload();
-            }
-        }
-
+        
         private void bt_search_Click(object sender, RoutedEventArgs e)
         {
             reload();
@@ -350,20 +282,15 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Day,Instructor_ID,Name,Phone,Email,Department1,Department2,Subject FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = "+year+" AND Quarter LIKE '%"+quarter+"%' AND Day LIKE '%"+day+"%' AND Time LIKE '%"+time+"%' AND "+search+" LIKE '%"+tb_search.Text+ "%' AND Student_count>0 GROUP BY(Class.Day) ";
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year+" AND Quarter LIKE '%"+quarter+"%' AND "+search+" LIKE '%"+tb_search.Text+ "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
             Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
-                string day = Dayinttostring(Int32.Parse(rdr["Day"].ToString()));
-                //Int32.Parse(string) : string을 int로 변환
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Day = day, Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Console.WriteLine(rdr["SUM(Student_count)"]);
+                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
