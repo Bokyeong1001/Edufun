@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Edufun_2
 {
@@ -25,11 +26,13 @@ namespace Edufun_2
         private SQLiteConnection conn;
         private GridViewColumnHeader lastClickedGridViewColumnHeader = null;
         private ListSortDirection lastListSortDirection = ListSortDirection.Ascending;
+        List<Class_Instructor> instructors = new List<Class_Instructor>();
+
         bool start = false;
         string search = "Name";
         int year = 2021;
         string quarter = "";
-        string time ="";
+        string time = "";
         string day = "";
         public ClassPage()
         {
@@ -114,20 +117,25 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Day,Instructor_ID,Name,Phone,Email,Department1,Department2,Subject FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID GROUP BY(Class.Day)";
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
 
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
-                string day = Dayinttostring(Int32.Parse(rdr["Day"].ToString()));
-                //Int32.Parse(string) : string을 int로 변환
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Day = day, Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Class_Instructor inst = new Class_Instructor();
+                inst.ID = Int32.Parse(rdr["Instructor_ID"].ToString());
+                inst.Name = rdr["Name"].ToString();
+                inst.Quarter = Int32.Parse(rdr["Quarter"].ToString());
+                inst.Phone = rdr["Phone"].ToString();
+                inst.Subject = rdr["Subject"].ToString();
+                inst.Department1 = rdr["Department1"].ToString();
+                inst.Department2 = rdr["Department2"].ToString();
+                inst.Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString());
+                instructors.Add(inst);
+                Console.WriteLine(rdr["SUM(Student_count)"]);
+                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
@@ -256,69 +264,6 @@ namespace Edufun_2
             }
         }
 
-        private void cb_day_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (start)
-            {
-                ComboBoxItem cbi = (ComboBoxItem)cb_day.SelectedItem;
-                string cbi_day = cbi.Content.ToString();
-                if (cbi_day == "요일전체")
-                {
-                    day = "";
-                }
-                else if (cbi_day == "월요일")
-                {
-                    day = "1";
-                }
-                else if (cbi_day == "화요일")
-                {
-                    day = "2";
-                }
-                else if (cbi_day == "수요일")
-                {
-                    day = "3";
-                }
-                else if (cbi_day == "목요일")
-                {
-                    day = "4";
-                }
-                else if (cbi_day == "금요일")
-                {
-                    day = "5";
-                }
-                else if (cbi_day == "토요일")
-                {
-                    day = "6";
-                }
-                else if (cbi_day == "일요일")
-                {
-                    day = "7";
-                }
-                reload();
-            }
-        }
-
-        private void cb_time_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (start)
-            {
-                ComboBoxItem cbi = (ComboBoxItem)cb_time.SelectedItem;
-                string cbi_time = cbi.Content.ToString();
-                if (cbi_time == "교시전체")
-                {
-                    time = "";
-                }
-                else if (cbi_time == "1교시")
-                {
-                    time = "1";
-                }
-                else if (cbi_time == "2교시")
-                {
-                    time = "2";
-                }
-                reload();
-            }
-        }
 
         private void bt_search_Click(object sender, RoutedEventArgs e)
         {
@@ -350,23 +295,69 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Day,Instructor_ID,Name,Phone,Email,Department1,Department2,Subject FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = "+year+" AND Quarter LIKE '%"+quarter+"%' AND Day LIKE '%"+day+"%' AND Time LIKE '%"+time+"%' AND "+search+" LIKE '%"+tb_search.Text+ "%' AND Student_count>0 GROUP BY(Class.Day) ";
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
             Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
-                string day = Dayinttostring(Int32.Parse(rdr["Day"].ToString()));
-                //Int32.Parse(string) : string을 int로 변환
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Day = day, Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Class_Instructor inst = new Class_Instructor();
+                inst.ID = Int32.Parse(rdr["ID"].ToString());
+                inst.Name = rdr["Name"].ToString();
+                inst.Quarter = Int32.Parse(rdr["Quarter"].ToString());
+                inst.Phone = rdr["Phone"].ToString();
+                inst.Subject = rdr["Subject"].ToString();
+                inst.Department1 = rdr["Department1"].ToString();
+                inst.Department2 = rdr["Department2"].ToString();
+                inst.Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString());
+                instructors.Add(inst);
+                Console.WriteLine(rdr["SUM(Student_count)"]);
+                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            var excelApp = new Excel.Application();
+            // Make the object visible.
+            excelApp.Visible = true;
+
+            // Create a new, empty workbook and add it to the collection returned
+            // by property Workbooks. The new workbook becomes the active workbook.
+            // Add has an optional parameter for specifying a praticular template.
+            // Because no argument is sent in this example, Add creates a new workbook.
+            excelApp.Workbooks.Add();
+
+            // This example uses a single workSheet. The explicit type casting is
+            // removed in a later procedure.
+            Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+            ComboBoxItem cbi = (ComboBoxItem)cb_year.SelectedItem;
+            string cbi_year = cbi.Content.ToString();
+            workSheet.Cells[1, "A"] = cbi_year;
+            workSheet.Cells[2, "A"] = "ID";
+            workSheet.Cells[2, "B"] = "이름";
+            workSheet.Cells[2, "C"] = "분기";
+            workSheet.Cells[2, "D"] = "폰번호";
+            workSheet.Cells[2, "E"] = "과목";
+            workSheet.Cells[2, "F"] = "소속1";
+            workSheet.Cells[2, "G"] = "소속2";
+            workSheet.Cells[2, "H"] = "학생수";
+            var row = 2;
+            foreach (var inst in instructors)
+            {
+                row++;
+                workSheet.Cells[row, "A"] = inst.ID;
+                workSheet.Cells[row, "B"] = inst.Name;
+                workSheet.Cells[row, "C"] = inst.Quarter;
+                workSheet.Cells[row, "D"] = inst.Phone;
+                workSheet.Cells[row, "E"] = inst.Subject;
+                workSheet.Cells[row, "F"] = inst.Department1;
+                workSheet.Cells[row, "G"] = inst.Department2;
+                workSheet.Cells[row, "H"] = inst.Student_count;
+            }
         }
     }
 }

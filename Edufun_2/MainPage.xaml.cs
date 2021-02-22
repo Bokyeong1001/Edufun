@@ -26,6 +26,7 @@ namespace Edufun_2
         private SQLiteConnection conn;
         private GridViewColumnHeader lastClickedGridViewColumnHeader = null;
         private ListSortDirection lastListSortDirection = ListSortDirection.Ascending;
+        List<Instructor> instructors = new List<Instructor>();
         bool start = false;
         string department = "";
         string subject = "";
@@ -81,10 +82,14 @@ namespace Edufun_2
             
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
+                Instructor inst = new Instructor();
+                inst.ID = Int32.Parse(rdr["ID"].ToString());
+                inst.Name= rdr["Name"].ToString();
+                inst.Phone = rdr["Phone"].ToString();
+                inst.Subject = rdr["Subject"].ToString();
+                inst.Department1 = rdr["Department1"].ToString();
+                inst.Department2 = rdr["Department2"].ToString();
+                instructors.Add(inst);
                 //Int32.Parse(string) : string을 int로 변환
                 Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
             }
@@ -218,6 +223,8 @@ namespace Edufun_2
         }
         private void reload()
         {
+            instructors = new List<Instructor>();
+
             myListView.ItemsSource = null;
             Instructor.GetInstance().Clear();
 
@@ -228,10 +235,14 @@ namespace Edufun_2
 
             while (rdr.Read())
             {
-                string Name = rdr["Name"].ToString();
-                Console.WriteLine("Name: " + Name);
-                string Phone = rdr["Phone"].ToString();
-                Console.WriteLine("Phone: " + Phone);
+                Instructor inst = new Instructor();
+                inst.ID = Int32.Parse(rdr["ID"].ToString());
+                inst.Name = rdr["Name"].ToString();
+                inst.Phone = rdr["Phone"].ToString();
+                inst.Subject = rdr["Subject"].ToString();
+                inst.Department1 = rdr["Department1"].ToString();
+                inst.Department2 = rdr["Department2"].ToString();
+                instructors.Add(inst);
                 //Int32.Parse(string) : string을 int로 변환
                 Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
             }
@@ -270,7 +281,7 @@ namespace Edufun_2
             this.NavigationService.Navigate(classpage);
         }
 
-        static void DisplayInExcel(IEnumerable<Instructor> instructors)
+        private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             var excelApp = new Excel.Application();
             // Make the object visible.
@@ -287,8 +298,22 @@ namespace Edufun_2
             Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
 
             workSheet.Cells[1, "A"] = "ID";
-            workSheet.Cells[1, "B"] = "Name";
+            workSheet.Cells[1, "B"] = "이름";
+            workSheet.Cells[1, "C"] = "폰번호";
+            workSheet.Cells[1, "D"] = "과목";
+            workSheet.Cells[1, "E"] = "소속1";
+            workSheet.Cells[1, "F"] = "소속2";
+            var row = 1;
+            foreach (var inst in instructors)
+            {
+                row++;
+                workSheet.Cells[row, "A"] = inst.ID;
+                workSheet.Cells[row, "B"] = inst.Name;
+                workSheet.Cells[row, "C"] = inst.Phone;
+                workSheet.Cells[row, "D"] = inst.Subject;
+                workSheet.Cells[row, "E"] = inst.Department1;
+                workSheet.Cells[row, "F"] = inst.Department2;
+            }
         }
-
     }
 }

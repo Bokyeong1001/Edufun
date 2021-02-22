@@ -22,6 +22,7 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="190"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
@@ -330,9 +331,41 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid Grid.Row="3" Width="200" Height="40" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                <TextBlock Text="총 학생수" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="110"/>
-                <TextBlock Text="" x:Name="tb_totalcount" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0" Width="50"/>
+            <Grid Grid.Row="3" Height="40" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0" >
+                    <TextBlock Text="1분기" Grid.Column="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
+                    <TextBlock Text="" x:Name="tb_q1count" Grid.Column="1" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="2" >
+                    <TextBlock Text="2분기" Grid.Column="2" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="3" >
+                    <TextBlock Text="" x:Name="tb_q2count" Grid.Column="3" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="4" >
+                    <TextBlock Text="3분기" Grid.Column="4" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="5" >
+                    <TextBlock Text="" x:Name="tb_q3count" Grid.Column="5" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="6" >
+                    <TextBlock Text="4분기" Grid.Column="6" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black" Grid.Column="7" >
+                    <TextBlock Text="" x:Name="tb_q4count" Grid.Column="7" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
             </Grid>
         </Grid>
         <Grid Grid.Row="4" Width="750" Height="160" Margin="10,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -390,8 +423,11 @@
                     <TextBlock x:Name="tb_shipmethod2"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
-
+            
         </Grid>
+        <Button Name="btnExport" Click="btnExport_Click"  Margin="0,0,40,0" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150" Height="40" Content="내보내기"  FontSize="24" />
+
+
         <Grid x:Name="ClassAdd" Width="450" Height="450" Margin="-450,0,0,0" Background="#FFBBBBBB" Grid.RowSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>

@@ -27,6 +27,7 @@ namespace Edufun_2
         private SQLiteConnection conn;
         private GridViewColumnHeader lastClickedGridViewColumnHeader = null;
         private ListSortDirection lastListSortDirection = ListSortDirection.Ascending;
+        List<School_student> students = new List<School_student>();
         bool start = false;
         public EditPage()
         {
@@ -93,7 +94,7 @@ namespace Edufun_2
             }
             return Day;
         }
-        
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             start = true;
@@ -134,6 +135,9 @@ namespace Edufun_2
             string year = cbi.Content.ToString();
             Console.WriteLine(year);
 
+            students = new List<School_student>();
+            classListView.ItemsSource = null;
+
             String sql2 = "SELECT * FROM Class WHERE Instructor_ID = " + instructor_id + " AND Year = '" + year + "' ORDER BY School ASC, Day ASC, Quarter ASC, Time ASC ";
             Console.WriteLine(sql2);
 
@@ -141,84 +145,130 @@ namespace Edufun_2
             SQLiteDataReader rdr2 = cmd2.ExecuteReader();
 
             School_student.GetInstance().Clear();
-            School_student[] classes = new School_student[100];
-            int count = -1;
+
             int total_sum = 0;
             string school = "";
             int day = 0;
+            bool change = false;
+            bool hasrows = false;
+            School_student stud = new School_student();
             while (rdr2.Read())
             {
-                Console.WriteLine(rdr2["School"].ToString());
-                Console.WriteLine(Int32.Parse(rdr2["Day"].ToString()));
+                hasrows = true;
                 if ((school != rdr2["School"].ToString()) || (day != Int32.Parse(rdr2["Day"].ToString())))
                 {
-                    count++;
-                    classes[count] = new School_student();
-                    classes[count].School = rdr2["School"].ToString();
-                    classes[count].Day = Dayinttostring(Int32.Parse(rdr2["Day"].ToString()));
-                    classes[count].Year = Int32.Parse(rdr2["Year"].ToString());
+                    if (change)
+                    {
+                        students.Add(stud);
+                        Console.WriteLine("start added");
+                    }
+                    stud = new School_student();
+                    stud.School = rdr2["School"].ToString();
+                    stud.Day = Dayinttostring(Int32.Parse(rdr2["Day"].ToString()));
                     school = rdr2["School"].ToString();
                     day = Int32.Parse(rdr2["Day"].ToString());
-                    Console.WriteLine("hello");
+                    change = true;
                 }
                 int Time = Int32.Parse(rdr2["Time"].ToString());
                 int Quarter = Int32.Parse(rdr2["Quarter"].ToString());
                 int student_count = Int32.Parse(rdr2["Student_count"].ToString());
+                Console.WriteLine(rdr2["Day"].ToString() + "요일 " + Quarter + "분기 " + Time + "교시 " + student_count + "명 ");
                 if (Quarter == 1)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q1t1 = student_count;
+                        Console.WriteLine("1교시");
+                        Console.WriteLine(student_count);
+                        stud.q1t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q1t2 = student_count;
+                        Console.WriteLine("2교시");
+                        stud.q1t2 = student_count;
+                        Console.WriteLine(stud.q1t2);
                     }
                 }
                 else if (Quarter == 2)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q2t1 = student_count;
+                        stud.q2t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q2t2 = student_count;
+                        stud.q2t2 = student_count;
                     }
                 }
                 else if (Quarter == 3)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q3t1 = student_count;
+                        stud.q3t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q3t2 = student_count;
+                        stud.q3t2 = student_count;
                     }
                 }
                 else if (Quarter == 4)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q4t1 = student_count;
+                        stud.q4t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q4t2 = student_count;
+                        stud.q4t2 = student_count;
                     }
                 }
                 total_sum += student_count;
                 //Int32.Parse(string) : string을 int로 변환
+                stud.q1sum = stud.q1t1 + stud.q1t2;
+                stud.q2sum = stud.q2t1 + stud.q2t2;
+                stud.q3sum = stud.q3t1 + stud.q3t2;
+                stud.q4sum = stud.q4t1 + stud.q4t2;
             }
-            rdr2.Close();
-            for (int i = 0; i <= count; i++)
+            if (hasrows)
             {
-                Console.WriteLine(i);
-                School_student.GetInstance().Add(new School_student() { ID = i, School = classes[i].School, Day = classes[i].Day, Year = classes[i].Year, q1t1 = classes[i].q1t1, q1t2 = classes[i].q1t2, q1sum = classes[i].q1t1 + classes[i].q1t2, q2t1 = classes[i].q2t1, q2t2 = classes[i].q2t2, q2sum = classes[i].q2t1 + classes[i].q2t2, q3t1 = classes[i].q3t1, q3t2 = classes[i].q3t2, q3sum = classes[i].q3t1 + classes[i].q3t2, q4t1 = classes[i].q4t1, q4t2 = classes[i].q4t2, q4sum = classes[i].q4t1 + classes[i].q4t2 });
+                students.Add(stud);
+                Console.WriteLine("added");
             }
+
+            rdr2.Close();
+            for (int i = 0; i < students.Count(); i++)
+            {
+                Console.WriteLine("sdsdsdf");
+                Console.WriteLine(students[i].q1t2);
+                School_student.GetInstance().Add(new School_student() { ID = i, School = students[i].School, Day = students[i].Day, Year = Int32.Parse(year), q1t1 = students[i].q1t1, q1t2 = students[i].q1t2, q1sum = students[i].q1t1 + students[i].q1t2, q2t1 = students[i].q2t1, q2t2 = students[i].q2t2, q2sum = students[i].q2t1 + students[i].q2t2, q3t1 = students[i].q3t1, q3t2 = students[i].q3t2, q3sum = students[i].q3t1 + students[i].q3t2, q4t1 = students[i].q4t1, q4t2 = students[i].q4t2, q4sum = students[i].q4t1 + students[i].q4t2 });
+            }
+
             classListView.ItemsSource = School_student.GetInstance();
-            tb_totalcount.Text = total_sum.ToString();
+
+            String sql3 = "SELECT SUM(Student_count),Quarter FROM Class WHERE Year = " + year + " AND Instructor_ID = " + instructor_id + " GROUP BY(Quarter) ";
+            SQLiteCommand cmd3 = new SQLiteCommand(sql3, conn);
+            SQLiteDataReader rdr3 = cmd3.ExecuteReader();
+
+            while (rdr3.Read())
+            {
+                Console.WriteLine(rdr3["SUM(Student_count)"]);
+                if (rdr3["Quarter"].ToString() == "1")
+                {
+                    tb_q1count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "2")
+                {
+                    tb_q2count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "3")
+                {
+                    tb_q3count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "4")
+                {
+                    tb_q4count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+            }
+            rdr3.Close();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -286,7 +336,7 @@ namespace Edufun_2
             string Ship_Method2 = tb_shipmethod2.Text;
             string Remark = tb_remark.Text;
 
-            String sql = "UPDATE Instructor SET Name= '"+Name+ "' ,Phone= '"+Phone + "' ,Subject= '"+Subject + "' ,Email= '"+Email + "' ,Address= '"+Address + "' ,Department1= '"+Department1 + "' ,Department2= '" + Department2 +  "' ,Ship_Address1= '"+Ship_Address1 + "' ,Ship_Method1= '"+Ship_Method1 + "' ,Ship_Address2= '" + Ship_Address2 + "' ,Ship_Method2= '" + Ship_Method2 + "' ,Remark= '"+Remark + "' WHERE ID = " + instructor_id;
+            String sql = "UPDATE Instructor SET Name= '" + Name + "' ,Phone= '" + Phone + "' ,Subject= '" + Subject + "' ,Email= '" + Email + "' ,Address= '" + Address + "' ,Department1= '" + Department1 + "' ,Department2= '" + Department2 + "' ,Ship_Address1= '" + Ship_Address1 + "' ,Ship_Method1= '" + Ship_Method1 + "' ,Ship_Address2= '" + Ship_Address2 + "' ,Ship_Method2= '" + Ship_Method2 + "' ,Remark= '" + Remark + "' WHERE ID = " + instructor_id;
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
@@ -303,7 +353,7 @@ namespace Edufun_2
         }
         private void classListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             School_student selectedItem = (School_student)classListView.SelectedItem;
             if (selectedItem != null)
             {
@@ -528,7 +578,7 @@ namespace Edufun_2
             {
                 day = 7;
             }
-            String sql = "DELETE FROM Class WHERE Instructor_ID = " + instructor_id+" AND School = '"+school+ "' AND Day = "+day + " AND year = "+year;
+            String sql = "DELETE FROM Class WHERE Instructor_ID = " + instructor_id + " AND School = '" + school + "' AND Day = " + day + " AND year = " + year;
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
@@ -541,93 +591,140 @@ namespace Edufun_2
         }
         private void reload(string year)
         {
+            students = new List<School_student>();
+            classListView.ItemsSource = null;
 
             String sql2 = "SELECT * FROM Class WHERE Instructor_ID = " + instructor_id + " AND Year = '" + year + "' ORDER BY School ASC, Day ASC, Quarter ASC, Time ASC ";
+            Console.WriteLine(sql2);
 
             SQLiteCommand cmd2 = new SQLiteCommand(sql2, conn);
             SQLiteDataReader rdr2 = cmd2.ExecuteReader();
 
-            classListView.ItemsSource = null;
             School_student.GetInstance().Clear();
-            School_student[] classes = new School_student[100];
-            int count = -1;
+
             int total_sum = 0;
             string school = "";
             int day = 0;
+            bool change = false;
+            bool hasrows = false;
+            School_student stud = new School_student();
             while (rdr2.Read())
             {
-                Console.WriteLine(rdr2["School"].ToString());
-                Console.WriteLine(Int32.Parse(rdr2["Day"].ToString()));
+                hasrows = true;
                 if ((school != rdr2["School"].ToString()) || (day != Int32.Parse(rdr2["Day"].ToString())))
                 {
-                    count++;
-                    classes[count] = new School_student();
-                    classes[count].School = rdr2["School"].ToString();
-                    classes[count].Day = Dayinttostring(Int32.Parse(rdr2["Day"].ToString()));
-                    classes[count].Year = Int32.Parse(rdr2["Year"].ToString());
+                    if (change)
+                    {
+                        students.Add(stud);
+                        Console.WriteLine("start added");
+                    }
+                    stud = new School_student();
+                    stud.School = rdr2["School"].ToString();
+                    stud.Day = Dayinttostring(Int32.Parse(rdr2["Day"].ToString()));
                     school = rdr2["School"].ToString();
                     day = Int32.Parse(rdr2["Day"].ToString());
-                    Console.WriteLine("hello");
+                    change = true;
                 }
                 int Time = Int32.Parse(rdr2["Time"].ToString());
                 int Quarter = Int32.Parse(rdr2["Quarter"].ToString());
                 int student_count = Int32.Parse(rdr2["Student_count"].ToString());
+                Console.WriteLine(rdr2["Day"].ToString() + "요일 " + Quarter + "분기 " + Time + "교시 " + student_count + "명 ");
                 if (Quarter == 1)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q1t1 = student_count;
+                        Console.WriteLine("1교시");
+                        Console.WriteLine(student_count);
+                        stud.q1t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q1t2 = student_count;
+                        Console.WriteLine("2교시");
+                        stud.q1t2 = student_count;
+                        Console.WriteLine(stud.q1t2);
                     }
                 }
                 else if (Quarter == 2)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q2t1 = student_count;
+                        stud.q2t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q2t2 = student_count;
+                        stud.q2t2 = student_count;
                     }
                 }
                 else if (Quarter == 3)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q3t1 = student_count;
+                        stud.q3t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q3t2 = student_count;
+                        stud.q3t2 = student_count;
                     }
                 }
                 else if (Quarter == 4)
                 {
                     if (Time == 1)
                     {
-                        classes[count].q4t1 = student_count;
+                        stud.q4t1 = student_count;
                     }
                     else if (Time == 2)
                     {
-                        classes[count].q4t2 = student_count;
+                        stud.q4t2 = student_count;
                     }
                 }
                 total_sum += student_count;
                 //Int32.Parse(string) : string을 int로 변환
+                stud.q1sum = stud.q1t1 + stud.q1t2;
+                stud.q2sum = stud.q2t1 + stud.q2t2;
+                stud.q3sum = stud.q3t1 + stud.q3t2;
+                stud.q4sum = stud.q4t1 + stud.q4t2;
             }
-            rdr2.Close();
-            Console.WriteLine("count:" + count);
-            for (int i = 0; i <= count; i++)
+            if (hasrows)
             {
-                Console.WriteLine(i);
-                School_student.GetInstance().Add(new School_student() { ID = i, School = classes[i].School, Day = classes[i].Day, Year=classes[i].Year, q1t1 = classes[i].q1t1, q1t2 = classes[i].q1t2, q1sum = classes[i].q1t1 + classes[i].q1t2, q2t1 = classes[i].q2t1, q2t2 = classes[i].q2t2, q2sum = classes[i].q2t1 + classes[i].q2t2, q3t1 = classes[i].q3t1, q3t2 = classes[i].q3t2, q3sum = classes[i].q3t1 + classes[i].q3t2, q4t1 = classes[i].q4t1, q4t2 = classes[i].q4t2, q4sum = classes[i].q4t1 + classes[i].q4t2 });
+                students.Add(stud);
+                Console.WriteLine("added");
             }
+
+            rdr2.Close();
+            for (int i = 0; i < students.Count(); i++)
+            {
+                Console.WriteLine("sdsdsdf");
+                Console.WriteLine(students[i].q1t2);
+                School_student.GetInstance().Add(new School_student() { ID = i, School = students[i].School, Year = Int32.Parse(year), Day = students[i].Day, q1t1 = students[i].q1t1, q1t2 = students[i].q1t2, q1sum = students[i].q1t1 + students[i].q1t2, q2t1 = students[i].q2t1, q2t2 = students[i].q2t2, q2sum = students[i].q2t1 + students[i].q2t2, q3t1 = students[i].q3t1, q3t2 = students[i].q3t2, q3sum = students[i].q3t1 + students[i].q3t2, q4t1 = students[i].q4t1, q4t2 = students[i].q4t2, q4sum = students[i].q4t1 + students[i].q4t2 });
+            }
+
             classListView.ItemsSource = School_student.GetInstance();
-            tb_totalcount.Text = total_sum.ToString();
+
+            String sql3 = "SELECT SUM(Student_count),Quarter FROM Class WHERE Year = " + year + " AND Instructor_ID = " + instructor_id + " GROUP BY(Quarter) ";
+            SQLiteCommand cmd3 = new SQLiteCommand(sql3, conn);
+            SQLiteDataReader rdr3 = cmd3.ExecuteReader();
+
+            while (rdr3.Read())
+            {
+                Console.WriteLine(rdr3["SUM(Student_count)"]);
+                if (rdr3["Quarter"].ToString() == "1")
+                {
+                    tb_q1count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "2")
+                {
+                    tb_q2count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "3")
+                {
+                    tb_q3count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+                else if (rdr3["Quarter"].ToString() == "4")
+                {
+                    tb_q4count.Text = rdr3["SUM(Student_count)"].ToString();
+                }
+            }
+            rdr3.Close();
         }
 
         private void add_class_Click(object sender, RoutedEventArgs e)
@@ -794,6 +891,17 @@ namespace Edufun_2
                 string year = cbi.Content.ToString();
                 reload(year);
                 ShowHideDetail("sbHideClassAdd", ClassAdd);
+                tb_add_school.Text = "";
+                tb_add_year.Text = "";
+                tb_add_day.Text = "";
+                tb_q1t1.Text = "";
+                tb_q1t2.Text = "";
+                tb_q2t1.Text = "";
+                tb_q2t2.Text = "";
+                tb_q3t1.Text = "";
+                tb_q3t2.Text = "";
+                tb_q4t1.Text = "";
+                tb_q4t2.Text = "";
             }
         }
         private void cb_year_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -804,6 +912,24 @@ namespace Edufun_2
                 string year = cbi.Content.ToString();
                 reload(year);
             }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            String sql = "DELETE FROM Class WHERE Instructor_ID = " + instructor_id;
+            Console.WriteLine(sql);
+            SQLiteCommand command = new SQLiteCommand(sql, conn);
+            int result = command.ExecuteNonQuery();
+            Console.WriteLine("delete result: " + result);
+
+            String sql2 = "DELETE FROM Instructor WHERE ID = " + instructor_id;
+            Console.WriteLine(sql2);
+            SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
+            int result2 = command2.ExecuteNonQuery();
+            Console.WriteLine("delete result: " + result2);
+
+            MainPage main = new MainPage();
+            this.NavigationService.Navigate(main);
         }
     }
 }

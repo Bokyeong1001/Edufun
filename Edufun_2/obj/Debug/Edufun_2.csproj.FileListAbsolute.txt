@@ -31,7 +31,6 @@ C:\Users\윤보경\Desktop\Edufun\Edufun_2\bin\Debug\Edufun_2.exe
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\bin\Debug\Edufun_2.pdb
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.dll
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.xml
-C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.csprojAssemblyReference.cache
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\ClassPage.g.cs
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\CreatePage.g.cs
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\DetailPage.g.cs

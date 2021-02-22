@@ -73,7 +73,6 @@ namespace Edufun_2
             SQLiteDataReader rdr2 = command2.ExecuteReader();
             while (rdr2.Read())
             {
-                MessageBox.Show(rdr2["ID"].ToString());
                 DetailPage detail = new DetailPage();
                 detail.SetLoadCompleted(NavigationService);
                 this.NavigationService.Navigate(detail, Int32.Parse(rdr2["ID"].ToString()));
