@@ -8,7 +8,7 @@
 * CreatePage : 강사 추가 페이지.
 
 ### 데이터 구성(SQLite 사용)
-* Instructor 
+#### Instructor 
  - ID
  - Name
  - Phone
@@ -22,7 +22,7 @@
  - ShipAddress2
  - ShipMethod2
  - Remark
-* Class
+#### Class
  - ID
  - Instructor_ID
  - Year
