@@ -118,7 +118,9 @@
                     <TextBlock Text="비고" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBlock x:Name="tb_remark" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ScrollViewer>
+                        <TextBlock x:Name="tb_remark" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"  />
+                    </ScrollViewer>
                 </Border>
             </Grid>
         </Grid>

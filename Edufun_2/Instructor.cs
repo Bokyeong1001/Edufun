@@ -8,6 +8,7 @@ namespace Edufun_2
 {
     class Instructor
     {
+        public int idx { get; set; }
         public int ID { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }

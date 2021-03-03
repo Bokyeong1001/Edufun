@@ -75,11 +75,11 @@ namespace Edufun_2
             myListView.ItemsSource = null;
             Instructor.GetInstance().Clear();
 
-            String sql = "SELECT * FROM Instructor";
+            String sql = "SELECT * FROM Instructor ORDER BY Name ASC";
 
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
-            
+            int i = 1;
             while (rdr.Read())
             {
                 Instructor inst = new Instructor();
@@ -91,11 +91,12 @@ namespace Edufun_2
                 inst.Department2 = rdr["Department2"].ToString();
                 instructors.Add(inst);
                 //Int32.Parse(string) : string을 int로 변환
-                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Instructor.GetInstance().Add(new Instructor() { idx=i, ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                i++;
             }
             rdr.Close();
             myListView.ItemsSource = Instructor.GetInstance();
-
+            
         }
 
         public void InsertTable()
@@ -106,12 +107,13 @@ namespace Edufun_2
             SQLiteCommand command = new SQLiteCommand(sql, conn);
             int result = command.ExecuteNonQuery();
             Console.WriteLine("result: " + result);
-            */
+           
             String sql2 = "INSERT INTO Class (Instructor_ID,School,Day,Time,Year,Quarter,Student_count) VALUES (1,'에릭초등학교',1,1, 2021 ,2,10)";
 
             SQLiteCommand command2 = new SQLiteCommand(sql2, conn);
             int result2 = command2.ExecuteNonQuery();
             Console.WriteLine("result2: " + result2);
+         */
         }
         /*
          public void DeleteTable()
@@ -228,11 +230,11 @@ namespace Edufun_2
             myListView.ItemsSource = null;
             Instructor.GetInstance().Clear();
 
-            String sql = "SELECT * FROM Instructor WHERE subject LIKE '%" + subject + "%' AND (department1 LIKE '%" + department + "%' OR department2 LIKE '%" + department + "%')  AND " + search + " LIKE '%" + tb_search.Text + "%'";
+            String sql = "SELECT * FROM Instructor WHERE subject LIKE '%" + subject + "%' AND (department1 LIKE '%" + department + "%' OR department2 LIKE '%" + department + "%')  AND " + search + " LIKE '%" + tb_search.Text + "%' ORDER BY Name ASC";
             Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
-
+            int i = 1;
             while (rdr.Read())
             {
                 Instructor inst = new Instructor();
@@ -244,7 +246,8 @@ namespace Edufun_2
                 inst.Department2 = rdr["Department2"].ToString();
                 instructors.Add(inst);
                 //Int32.Parse(string) : string을 int로 변환
-                Instructor.GetInstance().Add(new Instructor() { ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                Instructor.GetInstance().Add(new Instructor() {idx=i, ID = Int32.Parse(rdr["ID"].ToString()), Name = rdr["Name"].ToString(), Phone = rdr["Phone"].ToString(), Email = rdr["Email"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString() });
+                i++;
             }
             rdr.Close();
             myListView.ItemsSource = Instructor.GetInstance();
@@ -297,9 +300,9 @@ namespace Edufun_2
             // removed in a later procedure.
             Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
 
-            workSheet.Cells[1, "A"] = "ID";
+            workSheet.Cells[1, "A"] = "idx";
             workSheet.Cells[1, "B"] = "이름";
-            workSheet.Cells[1, "C"] = "폰번호";
+            workSheet.Cells[1, "C"] = "전화번호";
             workSheet.Cells[1, "D"] = "과목";
             workSheet.Cells[1, "E"] = "소속1";
             workSheet.Cells[1, "F"] = "소속2";
@@ -307,9 +310,9 @@ namespace Edufun_2
             foreach (var inst in instructors)
             {
                 row++;
-                workSheet.Cells[row, "A"] = inst.ID;
+                workSheet.Cells[row, "A"] = row-1;
                 workSheet.Cells[row, "B"] = inst.Name;
-                workSheet.Cells[row, "C"] = inst.Phone;
+                workSheet.Cells[row, "C"] = "'"+inst.Phone;
                 workSheet.Cells[row, "D"] = inst.Subject;
                 workSheet.Cells[row, "E"] = inst.Department1;
                 workSheet.Cells[row, "F"] = inst.Department2;

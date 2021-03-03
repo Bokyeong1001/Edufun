@@ -49,10 +49,10 @@
         <ListView Name="classListView" Margin="13,60,27,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Left" GridViewColumnHeader.Click="classListView_Click" SelectionChanged="classListView_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="50">
+                    <GridViewColumn Header="idx" Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ID}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
+                                <TextBlock Text="{Binding idx}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

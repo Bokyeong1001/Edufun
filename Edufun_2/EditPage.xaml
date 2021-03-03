@@ -121,7 +121,9 @@
                     <TextBlock Text="비고" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBox x:Name="tb_remark" FontSize="24"/>
+                    <ScrollViewer>
+                        <TextBox x:Name="tb_remark" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"  />
+                    </ScrollViewer>
                 </Border>
             </Grid>
         </Grid>
@@ -387,7 +389,7 @@
                     <TextBlock Text="배송지1"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBlock x:Name="tb_shipaddress1"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tb_shipaddress1"  FontSize="24"/>
                 </Border>
             </Grid>
             <Grid Grid.Row="1">
@@ -399,7 +401,7 @@
                     <TextBlock Text="배송방법"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBlock x:Name="tb_shipmethod1"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tb_shipmethod1"  FontSize="24"/>
                 </Border>
             </Grid>
             <Grid Grid.Row="2">
@@ -411,7 +413,7 @@
                     <TextBlock Text="배송지2"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBlock x:Name="tb_shipaddress2"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tb_shipaddress2"  FontSize="24"/>
                 </Border>
             </Grid>
             <Grid Grid.Row="3">
@@ -423,7 +425,7 @@
                     <TextBlock Text="배송방법"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1" >
-                    <TextBlock x:Name="tb_shipmethod2"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tb_shipmethod2"  FontSize="24"/>
                 </Border>
             </Grid>
 

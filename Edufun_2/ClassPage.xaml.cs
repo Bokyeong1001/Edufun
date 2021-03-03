@@ -117,15 +117,16 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
-
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY Class.Instructor_ID ,Class.Quarter ORDER BY Name ASC";
+            Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
-
+            int i = 1;
             while (rdr.Read())
             {
                 Class_Instructor inst = new Class_Instructor();
                 inst.ID = Int32.Parse(rdr["Instructor_ID"].ToString());
+                Console.WriteLine(rdr["Instructor_ID"].ToString());
                 inst.Name = rdr["Name"].ToString();
                 inst.Quarter = Int32.Parse(rdr["Quarter"].ToString());
                 inst.Phone = rdr["Phone"].ToString();
@@ -135,8 +136,8 @@ namespace Edufun_2
                 inst.Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString());
                 instructors.Add(inst);
                 Console.WriteLine(rdr["SUM(Student_count)"]);
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
-
+                Class_Instructor.GetInstance().Add(new Class_Instructor() {idx=i, ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
+                i++;
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
@@ -295,16 +296,16 @@ namespace Edufun_2
             classListView.ItemsSource = null;
             Class_Instructor.GetInstance().Clear();
 
-            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ";
+            String sql = "SELECT Instructor_ID,Name,Phone,Department1,Department2,Subject,Quarter,SUM(Student_count) FROM Instructor JOIN Class ON Instructor.ID = Class.Instructor_ID WHERE Year = " + year + " AND Quarter LIKE '%" + quarter + "%' AND " + search + " LIKE '%" + tb_search.Text + "%' AND Student_count>0 GROUP BY(Class.Quarter) ORDER BY Name ASC";
 
             Console.WriteLine(sql);
             SQLiteCommand cmd = new SQLiteCommand(sql, conn);
             SQLiteDataReader rdr = cmd.ExecuteReader();
-
+            int i = 1;
             while (rdr.Read())
             {
                 Class_Instructor inst = new Class_Instructor();
-                inst.ID = Int32.Parse(rdr["ID"].ToString());
+                inst.ID = Int32.Parse(rdr["Instructor_ID"].ToString());
                 inst.Name = rdr["Name"].ToString();
                 inst.Quarter = Int32.Parse(rdr["Quarter"].ToString());
                 inst.Phone = rdr["Phone"].ToString();
@@ -314,7 +315,8 @@ namespace Edufun_2
                 inst.Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString());
                 instructors.Add(inst);
                 Console.WriteLine(rdr["SUM(Student_count)"]);
-                Class_Instructor.GetInstance().Add(new Class_Instructor() { ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
+                Class_Instructor.GetInstance().Add(new Class_Instructor() { idx=i,ID = Int32.Parse(rdr["Instructor_ID"].ToString()), Name = rdr["Name"].ToString(), Quarter = Int32.Parse(rdr["Quarter"].ToString()), Phone = rdr["Phone"].ToString(), Subject = rdr["Subject"].ToString(), Department1 = rdr["Department1"].ToString(), Department2 = rdr["Department2"].ToString(), Student_count = Int32.Parse(rdr["SUM(Student_count)"].ToString()) });
+                i++;
             }
             rdr.Close();
             classListView.ItemsSource = Class_Instructor.GetInstance();
@@ -338,10 +340,10 @@ namespace Edufun_2
             ComboBoxItem cbi = (ComboBoxItem)cb_year.SelectedItem;
             string cbi_year = cbi.Content.ToString();
             workSheet.Cells[1, "A"] = cbi_year;
-            workSheet.Cells[2, "A"] = "ID";
+            workSheet.Cells[2, "A"] = "idx";
             workSheet.Cells[2, "B"] = "이름";
             workSheet.Cells[2, "C"] = "분기";
-            workSheet.Cells[2, "D"] = "폰번호";
+            workSheet.Cells[2, "D"] = "전화번호";
             workSheet.Cells[2, "E"] = "과목";
             workSheet.Cells[2, "F"] = "소속1";
             workSheet.Cells[2, "G"] = "소속2";
@@ -350,10 +352,10 @@ namespace Edufun_2
             foreach (var inst in instructors)
             {
                 row++;
-                workSheet.Cells[row, "A"] = inst.ID;
+                workSheet.Cells[row, "A"] = row-1;
                 workSheet.Cells[row, "B"] = inst.Name;
                 workSheet.Cells[row, "C"] = inst.Quarter;
-                workSheet.Cells[row, "D"] = inst.Phone;
+                workSheet.Cells[row, "D"] = "'"+inst.Phone;
                 workSheet.Cells[row, "E"] = inst.Subject;
                 workSheet.Cells[row, "F"] = inst.Department1;
                 workSheet.Cells[row, "G"] = inst.Department2;

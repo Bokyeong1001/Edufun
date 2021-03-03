@@ -123,6 +123,8 @@ namespace Edufun_2
                 tb_department2.Text = Department2;
                 string Ship_Address1 = rdr["Ship_Address1"].ToString();
                 tb_shipaddress1.Text = Ship_Address1;
+                string Ship_Address2 = rdr["Ship_Address2"].ToString();
+                tb_shipaddress2.Text = Ship_Address2;
                 string Ship_Method1 = rdr["Ship_Method1"].ToString();
                 tb_shipmethod1.Text = Ship_Method1;
                 string Ship_Method2 = rdr["Ship_Method2"].ToString();

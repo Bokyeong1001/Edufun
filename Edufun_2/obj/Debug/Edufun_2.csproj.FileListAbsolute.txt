@@ -53,6 +53,12 @@ C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.csproj.CoreCompile
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.csproj.CopyComplete
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.exe
 C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.pdb
+C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.csprojAssemblyReference.cache
+C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.exe.config
+C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.exe
+C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.pdb
+C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.dll
+C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.xml
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.csprojAssemblyReference.cache
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\ClassPage.g.cs
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\CreatePage.g.cs
@@ -63,13 +69,6 @@ C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\MainWindow.g.cs
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\App.g.cs
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2_MarkupCompile.cache
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2_MarkupCompile.lref
-C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.exe
-C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.pdb
-C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.exe.config
-C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.exe
-C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\Edufun_2.pdb
-C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.dll
-C:\Users\user\source\repos\Edufun\Edufun_2\bin\Debug\System.Data.SQLite.xml
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\ClassPage.baml
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\CreatePage.baml
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\DetailPage.baml
@@ -81,4 +80,5 @@ C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.Properties.Resourc
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.csproj.GenerateResource.cache
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.csproj.CopyComplete
-C:\Users\윤보경\Desktop\Edufun\Edufun_2\obj\Debug\Edufun_2.csprojAssemblyReference.cache
+C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.exe
+C:\Users\user\source\repos\Edufun\Edufun_2\obj\Debug\Edufun_2.pdb
